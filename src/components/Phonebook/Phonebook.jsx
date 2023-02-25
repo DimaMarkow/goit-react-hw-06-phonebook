@@ -56,7 +56,7 @@ const Phonebook = () => {
           onDeleteContact={onDeleteContact}
         ></ContactList>
       )}
-      {!isContacts && <p>No contacts in list</p>}
+      {!isContacts && <p>No contacts in the list</p>}
     </div>
   );
 };
