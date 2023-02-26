@@ -1,61 +1,21 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import css from './phonebook.module.css';
 import ContactForm from 'components/Phonebook/ContactForm/ContactForm';
 import ContactList from 'components/Phonebook/ContactList/ContactList';
 import Filter from 'components/Phonebook/Filter/Filter';
 
-import { addContact, deleteContact } from 'redux/contacts/contacts-slice';
-import { setFilter } from 'redux/filter/filter-slice';
-
-import {
-  getAllContacts,
-  getFilteredContacts,
-} from 'redux/contacts/contacts-selectors';
-import { getFilter } from 'redux/filter/filter-selectors';
+import { getFilteredContacts } from 'redux/contacts/contacts-selectors';
 
 const Phonebook = () => {
   const filteredContacts = useSelector(getFilteredContacts);
-  const AllContacts = useSelector(getAllContacts);
-  const filter = useSelector(getFilter);
-
-  const dispatch = useDispatch();
-
-  const formSubmitHandler = data => {
-    const normalizedName = data.name.toLowerCase();
-    const repeatedContact = AllContacts.some(
-      contact => contact.name.toLowerCase() === normalizedName
-    );
-    if (repeatedContact) {
-      const alertString = data.name + ' is already in contacts.';
-      alert(alertString);
-      return;
-    }
-
-    dispatch(addContact({ ...data }));
-  };
-
-  const onDeleteContact = idForDelete => {
-    dispatch(deleteContact(idForDelete));
-  };
-
-  const filterHandler = data => {
-    dispatch(setFilter(data.value));
-  };
-
   const isContacts = Boolean(filteredContacts.length);
 
   return (
     <div className={css.wrapper}>
-      <ContactForm onSubmit={formSubmitHandler} />
-      <Filter handleFilter={filterHandler} filterValue={filter}></Filter>
-
-      {isContacts && (
-        <ContactList
-          contacts={filteredContacts}
-          onDeleteContact={onDeleteContact}
-        ></ContactList>
-      )}
+      <ContactForm />
+      <Filter />
+      {isContacts && <ContactList />}
       {!isContacts && <p>No contacts in the list</p>}
     </div>
   );
